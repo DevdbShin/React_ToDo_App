@@ -6,13 +6,10 @@ import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-    document.getElementById("root")
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>,
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+//document.body.innerHTML = `<div id="root"><div class="container"><div class="todoTop"><div class="title"><h1>My To Do List</h1><form style="display: flex;"><input type="text" name="value" placeholder="Title..." value="" style="flex: 10 1 0%; padding: 5px;"><input type="submit" class="btn" value="Add" style="flex: 1 1 0%;"></form></div></div><ul></ul></div></div>`;

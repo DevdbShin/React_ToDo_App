@@ -1,39 +1,22 @@
 import './App.css';
-import React from "react";
-import {useState} from "react";
+import {useState, useCallback} from "react";
+import Todolist from "./components/Todolist";
+import TodoForm from "./components/TodoForm";
 
 export default function App() {
 
-    const {todoData, setTodoData} = useState([
-        {
-            id : 1,
-            title: "111",
-            completed: false
-        }
-    ]);
-    const {value, setValue} = useState("");
+    console.log("App component");
 
-    console.log(todoData);
+    const initData = localStorage.getItem("todoData") ? JSON.parse(localStorage.getItem("todoData")) : [];
 
-    /*컴포넌트의 렌더링 결과물에 영향을 주는 데이터를 갖고 있는 객체입니다. (State가 변경되면 컴
-    포넌트는 리랜더링(Re-rendering)됩니다. 또한 State는 컴포넌트 안에서 관리됩니다.*/
+    const [todoData, setTodoData] = useState(initData);
+    const [value, setValue] = useState("");
 
-    const listStyle = (completed) => {
-        return {
-            backgroundColor: completed ? "#fff" : "#888",
-            color: completed ? "" : "#fff",
-            textDecoration: completed ? "none" : "line-through",
-        };
-    }
-
-    const handleClick = (id) => {
+    const handleClick = useCallback((id) => {
         let newTodoData = todoData.filter((data) => data.id !== id);
         setTodoData(newTodoData);
-    };
-
-    const handleChange = (e) => {
-        setValue(e.target.value);
-    };
+        localStorage.setItem("todoData", JSON.stringify(newTodoData));
+    }, [todoData]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -43,54 +26,24 @@ export default function App() {
             title : value,
             completed : true,
         }
-
         setTodoData(prev =>
             [...prev, newTodo]
         );
-    }
-
-    const changeFiled = (id) => {
-        let newTodoData = todoData.map((data) => {
-            if(data.id === id) {
-                data.completed = !data.completed
-            }
-            return data;
-        });
-        setTodoData( newTodoData );
-    }
+        localStorage.setItem("todoData", JSON.stringify([...todoData, newTodo]));
+    };
 
     return (
-        <div className="container">
-            <div className="todoTop">
-                <div className="title">
-                    <h1>My To Do List</h1>
-                    <form style={{display: "flex"}} onSubmit={handleSubmit}>
-                        <input
-                            type="text"
-                            name="value"
-                            style={{flex: "10", padding: "5px"}}
-                            placeholder="Title..."
-                            value={value}
-                            onChange={handleChange}
-                        />
-                        <input
-                            type={"submit"}
-                            value={"Add"}
-                            className={"btn"}
-                            style={{flex: "1"}}
-                        />
-                    </form>
-                </div>
-            </div>
+        <div className={"container"}>
 
-            <ul>
-                {todoData.map((data) => (
-                    <li style={listStyle(data.completed)} key={data.id} className="" onClick={() => changeFiled(data.id)}>
-                            {" "}{data.title}
-                            <span  onClick={() => handleClick(data.id)}>x</span>
-                    </li>
-                ))}
-            </ul>
+            <TodoForm value={value}
+                      setValue={setValue}
+                      handleSubmit={handleSubmit}
+            />
+
+            <Todolist todoData={todoData}
+                      setTodoData={setTodoData}
+                      handleClick={handleClick}
+            />
         </div>
     );
 }
