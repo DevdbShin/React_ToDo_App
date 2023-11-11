@@ -2,7 +2,7 @@ import React from "react";
 
 const TodoForm = React.memo(({value, setValue, handleSubmit}) => {
     //const TodoForm = ({value, setValue, setTodoData}) => {
-    console.log("Form component");
+    // console.log("Form component");
 
     const handleChange = (e) => {
         setValue(e.target.value);

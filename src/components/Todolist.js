@@ -2,7 +2,7 @@ import React from "react";
 
 const Todolist = React.memo(({todoData, setTodoData, handleClick}) => {
     //const Todolist = ({todoData, setTodoData}) => {
-    console.log("List component");
+    // console.log("List component");
 
     const changeFiled = (id) => {
         let newTodoData = todoData.map((data) => {
@@ -20,7 +20,7 @@ const Todolist = React.memo(({todoData, setTodoData, handleClick}) => {
             {todoData.map((data) => (
                 <li  key={data.id}
                      className={data.completed ? "" : "checked"}
-                     onClick={() => changeFiled(data.id)}>
+                     onClick={() => changeFiled(data.id)} >
                     {data.title}
                     <span onClick={(e) => {
                             e.stopPropagation()

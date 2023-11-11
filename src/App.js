@@ -4,9 +4,7 @@ import Todolist from "./components/Todolist";
 import TodoForm from "./components/TodoForm";
 
 export default function App() {
-
-    console.log("App component");
-
+    //console.log("App component");
     const initData = localStorage.getItem("todoData") ? JSON.parse(localStorage.getItem("todoData")) : [];
 
     const [todoData, setTodoData] = useState(initData);
