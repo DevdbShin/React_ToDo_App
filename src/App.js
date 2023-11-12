@@ -1,29 +1,53 @@
 import './App.css';
-import {useState, useCallback} from "react";
+import {useState, useCallback, useEffect} from "react";
 import Todolist from "./components/Todolist";
 import TodoForm from "./components/TodoForm";
+import axios from "./api/axios";
 
 export default function App() {
     //console.log("App component");
+
+    const fetchTodoData = async () => {
+        const result = await axios.get("");
+        console.log(result.data);
+        setTodoData(result.data);
+        localStorage.setItem("todoData", JSON.stringify(result.data));
+    }
+
     const initData = localStorage.getItem("todoData") ? JSON.parse(localStorage.getItem("todoData")) : [];
+
+    useEffect(() => {
+        fetchTodoData();
+    }, []);
 
     const [todoData, setTodoData] = useState(initData);
     const [value, setValue] = useState("");
 
-    const handleClick = useCallback((id) => {
+    const handleClick = useCallback(async (id) => {
+        const result = await axios.delete("", {
+            data :[id]
+        });
+        console.log("del = ", result);
+
         let newTodoData = todoData.filter((data) => data.id !== id);
         setTodoData(newTodoData);
         localStorage.setItem("todoData", JSON.stringify(newTodoData));
     }, [todoData]);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         let newTodo = {
-            id : Date.now(),
+            id : '',
             title : value,
             completed : true,
         }
+
+        const result = await axios.post("", [newTodo]);
+        newTodo.id = result.data[0];
+
+        console.log("add = ", newTodo);
+
         setTodoData(prev =>
             [...prev, newTodo]
         );
