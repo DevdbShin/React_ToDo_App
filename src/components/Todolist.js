@@ -20,7 +20,6 @@ const Todolist = React.memo(({todoData, setTodoData, handleClick}) => {
         console.log("upd = ", result);
 
         setTodoData( newTodoData );
-        localStorage.setItem("todoData", JSON.stringify(newTodoData));
     };
 
     return (

@@ -11,16 +11,13 @@ export default function App() {
         const result = await axios.get("");
         console.log(result.data);
         setTodoData(result.data);
-        localStorage.setItem("todoData", JSON.stringify(result.data));
     }
-
-    const initData = localStorage.getItem("todoData") ? JSON.parse(localStorage.getItem("todoData")) : [];
 
     useEffect(() => {
         fetchTodoData();
     }, []);
 
-    const [todoData, setTodoData] = useState(initData);
+    const [todoData, setTodoData] = useState([]);
     const [value, setValue] = useState("");
 
     const handleClick = useCallback(async (id) => {
@@ -31,7 +28,6 @@ export default function App() {
 
         let newTodoData = todoData.filter((data) => data.id !== id);
         setTodoData(newTodoData);
-        localStorage.setItem("todoData", JSON.stringify(newTodoData));
     }, [todoData]);
 
     const handleSubmit = async (e) => {
@@ -51,7 +47,6 @@ export default function App() {
         setTodoData(prev =>
             [...prev, newTodo]
         );
-        localStorage.setItem("todoData", JSON.stringify([...todoData, newTodo]));
     };
 
     return (
